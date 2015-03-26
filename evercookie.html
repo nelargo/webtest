@@ -1,0 +1,85 @@
+<html>
+<head>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/swfobject-2.2.min.js"></script>
+<script type="text/javascript" src="js/evercookie.js"></script>
+<script src="fingerprint.js"></script>
+
+<title>FPex - evercookie</title>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="http://madgoatstd.com/FPex/">MadGoat FingerPrint Lab</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="http://madgoatstd.com/FPex/">Main-Coded Key</a></li>
+          <li><a href="http://madgoatstd.com/FPex/uncoded.php">Uncoded key</a></li>
+          <li class="active"><a href="http://madgoatstd.com/FPex/evercookie.html">Evercoookie</a></li>          
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+        <li><span class="label label-info" id="myfingerprint"></span></li>
+      </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+
+<div class="jumbotron">
+  
+  <div class = "container">
+      <script>
+      		var fp = new Fingerprint({canvas: true});
+      		var val = parseInt(fp.get())+"";
+      		var ec = new evercookie({
+      	});
+        document.getElementById('myfingerprint').innerHTML = "Fingerprint: "+val;
+
+      	getC(1);
+
+      	
+
+      	function getC(dont)
+      		{
+      		  ec.get("uid", function(best, all) {
+      				document.getElementById('idtag').innerHTML = best;		
+      				var txt = document.getElementById('cookies');
+      				txt.innerHTML = "";
+      				for (var item in all){
+      					txt.innerHTML += '<tr><td>' + item + "</td><td>" +  (val == all[item] ? '<b>' + all[item] + '</b>' : all[item]) + '</td></tr>';			
+      				}
+      				if (!dont)
+      					getC(1);
+      			}, dont);
+      		}
+
+      </script>
+          
+          <div class="panel panel-default">
+          <div class="panel-heading">
+            <h2>Valor Cookie:  <span class="label label-info" id = "idtag">...</span></h2>
+            <input type=button class='btn btn-primary' value="Crear Evercookie" onClick="ec.set('uid',val); $('#idtag').html(val); setTimeOut(getC,1000, 1);" >
+            <input type=button class='btn btn-primary' value="Regenerar" onClick="document.getElementById('cookies').innerHTML = ''; setTimeout(getC, 300, 1);">
+
+          </div>
+          <table class='table table-condensed table-hover border'><thead><tr><th>Almacenamiento</th><th>valor</th></tr></thead><tbody id='cookies'>
+          </tbody></table></div>
+
+      
+
+  </div>
+
+</div>
+
+</body>
+</html>
